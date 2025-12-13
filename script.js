@@ -31,84 +31,90 @@ class UI {
     }
     
     // --- Utility Functions ---
+    // UPDATED: To handle the 'Pallavi' default cook name and clear kitchen fields
     static clearActivityFields() {
-        if (document.querySelector('#activity-form')) {
-            document.querySelector('#logDate').value = '';
-            document.querySelector('#cookName').value = ''; 
-            document.querySelector('#timeIn').value = '';
-            document.querySelector('#timeOut').value = '';
-            document.querySelector('#meal1').value = '';
-            document.querySelector('#meal2').value = '';
-            document.querySelector('#meal3').value = '';
-            document.querySelector('#rating').value = '5'; 
-            document.querySelector('#foodRemarks').value = '';
+        const form = document.querySelector('#activity-form');
+        if (form) {
+            form.reset();
+            // Explicitly set cookName back to the default value
+            document.querySelector('#cookName').value = 'Pallavi'; 
         }
     }
     
+    // Added for Expense Tracker form clearing
     static clearExpenseFields() {
-        if (document.querySelector('#expense-form')) {
-            document.querySelector('#logDate').value = '';
-            document.querySelector('#category').value = ''; 
-            document.querySelector('#restaurant').value = '';
-            document.querySelector('#remarks').value = '';
-            document.querySelector('#orderAmount').value = '0';
-            document.querySelector('#milkAmount').value = '0';
-            document.querySelector('#curdAmount').value = '0';
-            document.querySelector('#groceryAmount').value = '0';
+        const form = document.querySelector('#expense-form');
+        if (form) {
+            form.reset(); 
         }
     }
 }
 
 
 // ===================================
-// 2. COMMON STORE CLASS (CORS FIX APPLIED)
+// 2. DATA/STORE CLASS 
 // ===================================
-export class Store {
+
+class Store {
     
-    static async get(page = 'logs') { 
-        const endpoint = `${API_ENDPOINT}?page=${page}`;
-        
+    // FETCH data (GET request)
+    static async get(pageName) {
         try {
-            const response = await fetch(endpoint); 
-            if (!response.ok) throw new Error('Network response was not ok');
+            const response = await fetch(`${API_ENDPOINT}?page=${pageName}`, {
+                method: 'GET',
+                redirect: 'follow', 
+                cache: 'no-cache'
+            });
             
-            const data = await response.json(); 
-            if (data.error) { 
-                 UI.showAlert(`API returned an error for ${page}: ${data.error}`, 'alert-danger');
-                 return { error: 'API Error.' };
+            if (!response.ok) {
+                return { error: `HTTP error! status: ${response.status}` };
             }
+
+            const data = await response.json();
             return data;
         } catch (error) {
-            console.error(`Error fetching data for ${page}:`, error);
-            UI.showAlert(`Failed to load data for ${page}. Check API URL/Deployment.`, 'alert-danger');
-            return { error: 'Network/API Error.' };
+            console.error('Fetch error:', error);
+            return { error: 'Failed to fetch data. See console for details.' };
         }
     }
 
+    // POST data (Submission)
     static async post(data) {
-        // Post data via URL parameters for CORS compatibility (the core fix)
-        const params = new URLSearchParams(data).toString();
-        const endpoint = `${API_ENDPOINT}?${params}`;
-        
         try {
-            const response = await fetch(endpoint, {
-                method: 'POST',
-            });
+            // Encode the data object into URL search parameters
+            const urlSearchParams = new URLSearchParams(data);
             
+            const response = await fetch(`${API_ENDPOINT}?${urlSearchParams.toString()}`, {
+                method: 'POST',
+                redirect: 'follow'
+            });
+
+            if (!response.ok) {
+                UI.showAlert(`Submission failed! HTTP status: ${response.status}`, 'alert-danger');
+                return false;
+            }
+
             const result = await response.json();
             
             if (result.result === 'error') {
-                 UI.showAlert('API returned an error during save: ' + result.message, 'alert-danger');
+                 UI.showAlert(`Server Error: ${result.message}`, 'alert-danger');
                  return false;
             }
-            return result.result === 'success';
+            
+            return true;
+
         } catch (error) {
-            console.error('Error adding activity:', error);
-            UI.showAlert('Network error during save. Is the API endpoint correct?', 'alert-danger');
+            console.error('Post error:', error);
+            UI.showAlert('Failed to post data. Check console for details.', 'alert-danger');
             return false;
         }
     }
 }
+
+
+// Export the Store class for other modules
+export { Store };
+
 
 // ===================================
 // 3. ROUTER / ENTRY POINT
@@ -118,9 +124,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     let moduleName = null;
     let initFunctionName = null; // Store the function name to call
     
+    // Check which page we are on based on a unique element
     if (document.querySelector('#activity-form')) {
         moduleName = 'kitchen';
         initFunctionName = 'initKitchen'; // The new function name
+        
+        // Set the cook name default on load, just in case JS loads before form is rendered
+        const cookNameField = document.querySelector('#cookName');
+        if (cookNameField && !cookNameField.value) { // Only set if empty
+            cookNameField.value = 'Pallavi'; 
+        }
     }
     else if (document.querySelector('#meal-plan-body')) {
         moduleName = 'planner'; 
@@ -133,6 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (moduleName) {
         try {
+             // Dynamically import the required module (e.g., ./kitchen.js)
              const module = await import(`./${moduleName}.js`);
              
              // Check if the specific, renamed function exists in the module

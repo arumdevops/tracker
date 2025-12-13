@@ -33,10 +33,10 @@ function displayActivities(activities) {
             <td>${activity.logDate}</td>
             <td>${activity.cookName}</td>
             <td>${activity.timeIn} - ${activity.timeOut}</td>
-            <td>${activity.meal1}</td>
-            <td>${activity.meal2}</td>
-            <td>${activity.meal3}</td>
-            <td>${'★'.repeat(activity.rating)}</td>
+            <td>${activity.meal1 || '-'}</td>
+            <td>${activity.meal2 || '-'}</td>
+            <td>${activity.meal3 || '-'}</td>
+            <td class="text-center">${activity.rating || '-'}</td>
             <td>${activity.foodRemarks || '-'}</td>
         `;
         list.appendChild(row);
@@ -45,23 +45,29 @@ function displayActivities(activities) {
 
 // Page Handler (Initialization logic)
 export async function initKitchen() {
-    UI.showAlert('Loading kitchen logs from Sheet...', 'alert-success'); 
+    UI.showAlert('Loading kitchen activity logs from Sheet...', 'alert-success');
     
-    const activities = await Store.get('logs'); 
+    const activities = await Store.get('logs');
     
     if (activities.error) {
-        UI.showAlert('Failed to load logs. Check API URL/Deployment.', 'alert-danger');
+        UI.showAlert('Failed to load kitchen log. Check Sheet name/Deployment.', 'alert-danger');
     } else {
         displayActivities(activities);
-        document.querySelector('.alert')?.remove(); 
+        document.querySelector('.alert')?.remove();
     }
+    
+    // Setup form submission
+    setupFormSubmission();
+}
 
-    // POST listener
+// Form Submission Logic
+function setupFormSubmission() {
     document.querySelector('#activity-form').addEventListener('submit', async (e) => {
-        e.preventDefault(); 
-        
+        e.preventDefault();
+
+        // Get form values
         const logDate = document.querySelector('#logDate').value;
-        const cookName = document.querySelector('#cookName').value; 
+        const cookName = document.querySelector('#cookName').value;
         const timeIn = document.querySelector('#timeIn').value;
         const timeOut = document.querySelector('#timeOut').value;
         const meal1 = document.querySelector('#meal1').value;
