@@ -14,7 +14,6 @@ function displayMealPlan(plan) {
     const formatDate = (dateString) => {
         if (!dateString) return '-';
         try {
-            // dateString from Code.gs should be YYYY-MM-DD
             const date = new Date(dateString + 'T00:00:00'); 
             const day = date.getDate().toString().padStart(2, '0');
             const month = date.toLocaleDateString('en-US', { month: 'short' });
@@ -52,19 +51,15 @@ function displayMealPlan(plan) {
 export async function init() {
     UI.showAlert('Loading weekly meal plan from Sheet...', 'alert-success'); 
     
-    // CRITICAL FIX: Use 'planner' parameter for routing
     const mealPlan = await Store.get('planner'); 
     
     if (mealPlan.error) {
-        // If there's an error from the API, keep the alert visible
         UI.showAlert('Failed to load meal plan. Check Sheet name/Deployment.', 'alert-danger');
     } else {
         displayMealPlan(mealPlan);
-        // Clear the loading alert only on success
         document.querySelector('.alert')?.remove(); 
     }
 }
 
 // Export the init function as the entry point
-export { init }; 
-// NOTE: Only one 'export { init };' statement is now present.
+export { init };

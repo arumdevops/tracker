@@ -47,7 +47,6 @@ function displayActivities(activities) {
 export async function init() {
     UI.showAlert('Loading kitchen logs from Sheet...', 'alert-success'); 
     
-    // CRITICAL FIX: Use 'logs' parameter for routing in Code.gs
     const activities = await Store.get('logs'); 
     
     if (activities.error) {
@@ -78,9 +77,8 @@ export async function init() {
         
         const activity = new CookActivity(null, logDate, cookName, timeIn, timeOut, meal1, meal2, meal3, rating, foodRemarks);
 
-        // CRITICAL CORS FIX: Create the final object to send with 'action'
         const dataToSend = {
-            action: 'kitchen_log', // Required by Code.gs router
+            action: 'kitchen_log', 
             logDate: activity.logDate,
             cookName: activity.cookName,
             timeIn: activity.timeIn,
@@ -96,7 +94,6 @@ export async function init() {
         
         if (success) {
             UI.showAlert('Activity Logged Successfully! Refreshing list...', 'alert-success');
-            // Re-fetch data using the correct parameter
             const updatedActivities = await Store.get('logs'); 
             displayActivities(updatedActivities);
             UI.clearActivityFields();
@@ -105,4 +102,4 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init }; // ONLY ONE EXPORT HERE
+export { init };

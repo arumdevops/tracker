@@ -35,7 +35,6 @@ function displayExpenses(expenses) {
     const getMonthYear = (dateStr) => {
         if (!dateStr) return null;
         const date = new Date(dateStr);
-        // Ensure date calculation is consistent, using YYYY-MM
         return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
     };
 
@@ -43,7 +42,6 @@ function displayExpenses(expenses) {
     const currentMonthYear = getMonthYear(today);
 
     expenses.forEach((expense) => {
-        // Calculate total for the row
         const total = expense.orderAmount + expense.milkAmount + expense.curdAmount + expense.groceryAmount; 
         
         const expenseMonthYear = getMonthYear(expense.logDate);
@@ -86,7 +84,6 @@ function displaySummary(order, milk, curd, grocery) {
 
     const monthYear = new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
     
-    // Update the summary header
     const summaryHeader = document.querySelector('#summary-header');
     if(summaryHeader) {
         summaryHeader.textContent = `Monthly Summary for ${monthYear}`;
@@ -131,9 +128,9 @@ export async function init() {
 
         const expense = new ExpenseItem(null, logDate, category, restaurant, orderAmount, milkAmount, curdAmount, groceryAmount, remarks);
 
-        // CRITICAL CORS FIX: Create the final object to send with 'action'
+        // This ensures the data is correctly structured for the Apps Script router
         const dataToSend = {
-            action: 'expense_log', // Required by Code.gs router
+            action: 'expense_log', 
             logDate: expense.logDate,
             category: expense.category,
             restaurant: expense.restaurant,
@@ -156,5 +153,4 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init }; 
-// NOTE: Only one 'export { init };' statement is now present.
+export { init };
