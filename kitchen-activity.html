@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Activity Log</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-to-dashboard-icon" title="Back to Dashboard">
+            <i class="fas fa-home"></i>
+        </a>
+        
+        <h1><i class="fas fa-utensils"></i> Kitchen Activity Log</h1>
+        <p>Record the cook's daily schedule and meals prepared.</p>
+
+        <h2><i class="fas fa-pen-to-square"></i> Log Daily Activity</h2>
+        <form id="activity-form">
+            <div class="multi-field-group">
+                <div class="form-group">
+                    <label for="logDate">Date</label>
+                    <input type="date" id="logDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="cookName">Cook Name</label>
+                    <input type="text" id="cookName" class="form-control" required placeholder="e.g., Raju">
+                </div>
+            </div>
+
+            <div class="multi-field-group">
+                <div class="form-group">
+                    <label for="timeIn">Time In</label>
+                    <input type="time" id="timeIn" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="timeOut">Time Out</label>
+                    <input type="time" id="timeOut" class="form-control" required>
+                </div>
+            </div>
+
+            <label>Meals Prepared</label>
+            <div class="multi-field-group">
+                <div class="form-group">
+                    <input type="text" id="meal1" class="form-control" placeholder="Meal 1 (e.g., Breakfast)">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="meal2" class="form-control" placeholder="Meal 2 (e.g., Lunch)">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="meal3" class="form-control" placeholder="Meal 3 (e.g., Dinner)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="rating">Rating (1-5)</label>
+                <select id="rating" class="form-control" required>
+                    <option value="5">5 - Excellent</option>
+                    <option value="4">4 - Good</option>
+                    <option value="3">3 - Average</option>
+                    <option value="2">2 - Needs Improvement</option>
+                    <option value="1">1 - Poor</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="foodRemarks">Remarks/Notes</label>
+                <textarea id="foodRemarks" class="form-control"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> Add Activity</button>
+        </form>
+
+        <h2 class="mt-5"><i class="fas fa-list-ul"></i> Activity History</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Cook</th>
+                    <th>Time</th>
+                    <th>Meal 1</th>
+                    <th>Meal 2</th>
+                    <th>Meal 3</th>
+                    <th>Rating</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="activity-list">
+                </tbody>
+        </table>
+        
+        </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

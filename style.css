@@ -1,0 +1,239 @@
+/* Basic Reset and Variables */
+:root {
+    --primary-color: #007bff; /* Bright Blue */
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --bg-color: #f8f9fa;
+    --container-bg: #ffffff;
+    --text-color: #343a40;
+    --header-bg: #e9ecef; /* Light Gray for Headers */
+    --odd-row-bg: #f2f2f2; /* Very light gray for odd rows */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: var(--container-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative; /* Needed for absolute positioning of top buttons */
+}
+
+h1 {
+    color: var(--primary-color);
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+h2 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-size: 1.5em;
+}
+
+/* --- Dashboard Link Buttons (Index Page) --- */
+
+/* Vertical Links container for index.html */
+.vertical-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+    margin-bottom: 40px; 
+}
+.vertical-links .btn {
+    padding: 15px 25px;
+    font-size: 1.1em;
+    width: 100%; /* Ensure full width when stacked */
+}
+.vertical-links .btn i {
+    margin-right: 8px;
+}
+
+
+/* --- Form and Input Styling --- */
+.form-group { 
+    margin-bottom: 15px; 
+}
+label { 
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: bold; 
+    color: var(--text-color); 
+}
+.form-control { 
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #ced4da; 
+    border-radius: 4px; 
+    box-sizing: border-box; 
+    color: var(--text-color); 
+}
+textarea.form-control { resize: vertical; }
+
+/* Grouping fields on the same row (e.g., amounts, date/category) */
+.multi-field-group { 
+    display: flex; 
+    gap: 15px; 
+    margin-bottom: 5px; 
+}
+.multi-field-group > div { 
+    flex: 1; 
+}
+
+/* --- Button Styling --- */
+.btn {
+    display: inline-flex; 
+    align-items: center; 
+    padding: 12px 15px; 
+    font-size: 1em; 
+    font-weight: 600; 
+    text-align: center; 
+    border: none; 
+    border-radius: 4px;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    text-decoration: none; 
+    color: white !important; 
+    box-sizing: border-box;
+}
+.btn-primary { background-color: var(--primary-color); }
+.btn-primary:hover { background-color: #0056b3; }
+.btn-secondary { background-color: var(--secondary-color); }
+.btn-secondary:hover { background-color: #5a6268; }
+.btn-block { width: 100%; margin-top: 20px; }
+
+
+/* --- Top-Right Dashboard Icon --- */
+.back-to-dashboard-icon {
+    position: absolute;
+    top: 30px; /* Aligned with the container padding */
+    right: 30px; /* Aligned with the container padding */
+    padding: 10px 12px;
+    font-size: 1.1em;
+    background-color: var(--secondary-color);
+    color: white !important;
+    border-radius: 50%; /* Make it a circular button */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+.back-to-dashboard-icon:hover {
+    background-color: #5a6268;
+    text-decoration: none;
+}
+.back-to-dashboard-icon span {
+    display: none; /* Hide text label on icon button */
+}
+
+/* --- Table Styling --- */
+.table {
+    width: 100%; border-collapse: collapse; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); margin-top: 20px;
+}
+.table th {
+    background-color: var(--header-bg) !important; 
+    color: var(--primary-color); 
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #ced4da; 
+    font-size: 1em;
+    font-weight: bold;
+}
+.table td {
+    padding: 12px; text-align: left; border-bottom: 1px solid #dee2e6; font-size: 0.9em;
+}
+.table-striped tbody tr:nth-child(odd) { background-color: var(--odd-row-bg); }
+.table-striped tbody tr:hover { background-color: #e9e9e9; cursor: default; }
+
+/* --- Expense Tracker Summary Styles --- */
+
+.summary-card {
+    background-color: var(--header-bg); 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card h2 {
+    color: var(--primary-color);
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-top: 0;
+    font-size: 1.4em;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 15px 15px;
+    margin-top: 15px;
+}
+.summary-grid > div {
+    border-right: 1px solid #ccc;
+    padding-right: 15px;
+}
+.summary-grid > div:nth-child(4) { 
+    border-right: none;
+}
+.summary-grid .label {
+    font-weight: bold;
+    color: var(--text-color);
+    display: block;
+    font-size: 0.85em;
+    white-space: nowrap;
+    opacity: 0.8;
+}
+.summary-grid .amount {
+    font-size: 1.4em;
+    color: var(--danger-color); 
+    font-weight: 700;
+    display: block;
+}
+.summary-grid .total-row {
+    grid-column: 1 / 5; 
+    padding-top: 15px;
+    margin-top: 10px;
+    border-top: 2px dashed #a0a0a0;
+    display: flex;
+    justify-content: flex-end; 
+    gap: 20px;
+    align-items: center;
+}
+.summary-grid .total-row .label {
+    font-size: 1.2em;
+    font-weight: bold;
+    opacity: 1;
+}
+.summary-grid .total-amount {
+    font-size: 2em;
+    color: #000;
+    font-weight: 900;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .multi-field-group {
+        flex-direction: column;
+        gap: 0;
+    }
+    .summary-grid {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .summary-grid .total-row {
+        grid-column: 1 / 3; 
+    }
+    .back-to-dashboard-icon {
+        top: 20px;
+        right: 20px;
+    }
+}
