@@ -3,7 +3,8 @@
 // ===================================
 
 // ⚠️ PASTE YOUR KITCHEN LOG GOOGLE APPS SCRIPT WEB APP URL HERE
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec';
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec'; 
+
 // ===================================
 // 1. COMMON UI CLASS 
 // ===================================
@@ -115,25 +116,30 @@ export class Store {
 
 document.addEventListener('DOMContentLoaded', async () => {
     let moduleName = null;
+    let initFunctionName = null; // Store the function name to call
     
     if (document.querySelector('#activity-form')) {
         moduleName = 'kitchen';
+        initFunctionName = 'initKitchen'; // The new function name
     }
     else if (document.querySelector('#meal-plan-body')) {
         moduleName = 'planner'; 
+        initFunctionName = 'initPlanner'; // The new function name
     }
     else if (document.querySelector('#expense-form')) {
         moduleName = 'expense';
+        initFunctionName = 'initExpense'; // The new function name
     }
 
     if (moduleName) {
         try {
              const module = await import(`./${moduleName}.js`);
              
-             if (module && module.init) {
-                 module.init();
+             // Check if the specific, renamed function exists in the module
+             if (module && module[initFunctionName]) {
+                 module[initFunctionName](); // <-- CALL THE RENAMED FUNCTION
              } else {
-                 throw new Error(`Module ${moduleName}.js did not export an 'init' function.`);
+                 throw new Error(`Module ${moduleName}.js did not export a '${initFunctionName}' function.`);
              }
 
         } catch (error) {

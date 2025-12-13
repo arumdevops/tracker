@@ -91,7 +91,7 @@ function displaySummary(order, milk, curd, grocery) {
 }
 
 // Page Handler (Initialization logic)
-export async function init() {
+export async function initExpense() {
     UI.showAlert('Loading expense logs from Sheet...', 'alert-success'); 
     
     const expenses = await Store.get('expense');
@@ -153,4 +153,4 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init };
+export { initExpense };

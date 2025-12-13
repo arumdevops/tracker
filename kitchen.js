@@ -44,7 +44,7 @@ function displayActivities(activities) {
 }
 
 // Page Handler (Initialization logic)
-export async function init() {
+export async function initKitchen() {
     UI.showAlert('Loading kitchen logs from Sheet...', 'alert-success'); 
     
     const activities = await Store.get('logs'); 
@@ -102,4 +102,4 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init };
+export { initKitchen };

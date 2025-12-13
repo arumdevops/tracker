@@ -48,7 +48,7 @@ function displayMealPlan(plan) {
 }
 
 // Page Handler (Initialization logic)
-export async function init() {
+export async function initPlanner() {
     UI.showAlert('Loading weekly meal plan from Sheet...', 'alert-success'); 
     
     const mealPlan = await Store.get('planner'); 
@@ -62,4 +62,4 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init };
+export { initPlanner };
