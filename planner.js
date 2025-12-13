@@ -60,6 +60,3 @@ export async function initPlanner() {
         document.querySelector('.alert')?.remove(); 
     }
 }
-
-// Export the init function as the entry point
-export { initPlanner };

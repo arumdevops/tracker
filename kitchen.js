@@ -100,6 +100,3 @@ export async function initKitchen() {
         }
     });
 }
-
-// Export the init function as the entry point
-export { initKitchen };

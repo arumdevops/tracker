@@ -151,6 +151,3 @@ export async function initExpense() {
         }
     });
 }
-
-// Export the init function as the entry point
-export { initExpense };
