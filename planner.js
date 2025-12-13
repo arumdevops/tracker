@@ -1,6 +1,6 @@
 // planner.js - Handles Meal Planner Page
 
-// Import Store (and implicitly UI) from the shared script.js
+// CRITICAL FIX: Import Store from the shared script.js
 import { Store } from './script.js';
 
 // UI Rendering for this module
@@ -56,12 +56,15 @@ export async function init() {
     const mealPlan = await Store.get('planner'); 
     
     if (mealPlan.error) {
+        // If there's an error from the API, keep the alert visible
         UI.showAlert('Failed to load meal plan. Check Sheet name/Deployment.', 'alert-danger');
     } else {
         displayMealPlan(mealPlan);
+        // Clear the loading alert only on success
         document.querySelector('.alert')?.remove(); 
     }
 }
 
 // Export the init function as the entry point
-export { init };
+export { init }; 
+// NOTE: Only one 'export { init };' statement is now present.

@@ -43,6 +43,7 @@ function displayExpenses(expenses) {
     const currentMonthYear = getMonthYear(today);
 
     expenses.forEach((expense) => {
+        // Calculate total for the row
         const total = expense.orderAmount + expense.milkAmount + expense.curdAmount + expense.groceryAmount; 
         
         const expenseMonthYear = getMonthYear(expense.logDate);
@@ -96,7 +97,6 @@ function displaySummary(order, milk, curd, grocery) {
 export async function init() {
     UI.showAlert('Loading expense logs from Sheet...', 'alert-success'); 
     
-    // CRITICAL FIX: Use 'expense' page parameter
     const expenses = await Store.get('expense');
     
     if (expenses.error) {
@@ -156,4 +156,5 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init };
+export { init }; 
+// NOTE: Only one 'export { init };' statement is now present.

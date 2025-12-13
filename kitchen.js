@@ -105,4 +105,4 @@ export async function init() {
 }
 
 // Export the init function as the entry point
-export { init };
+export { init }; // ONLY ONE EXPORT HERE

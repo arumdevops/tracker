@@ -3,7 +3,7 @@
 // ===================================
 
 // ⚠️ PASTE YOUR KITCHEN LOG GOOGLE APPS SCRIPT WEB APP URL HERE
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec'; 
+const API_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'; 
 
 // ===================================
 // 1. COMMON UI CLASS 
@@ -22,6 +22,7 @@ class UI {
         const insertionPoint = document.querySelector('form') || document.querySelector('h2') || document.querySelector('.table');
         
         if (insertionPoint) {
+             // Insert alert above forms/sections
              container.insertBefore(div, insertionPoint); 
              setTimeout(() => document.querySelector('.alert')?.remove(), 3000);
         } else {
@@ -66,7 +67,11 @@ class UI {
 // ===================================
 export class Store {
     
-    static async get(page = 'logs') { // Default to 'logs' for safety
+    /**
+     * Fetches data from the Apps Script API using the 'page' parameter for routing.
+     * @param {string} page - The module name (e.g., 'logs', 'expense', 'planner').
+     */
+    static async get(page = 'logs') { 
         const endpoint = `${API_ENDPOINT}?page=${page}`;
         
         try {
@@ -86,8 +91,13 @@ export class Store {
         }
     }
 
+    /**
+     * Posts data to the Apps Script API using URL parameters for CORS compatibility.
+     * NOTE: The 'action' key MUST be included in the input 'data' object.
+     * @param {object} data - The data object to send (e.g., { action: 'kitchen_log', logDate: '...' })
+     */
     static async post(data) {
-        // POST data via URL parameters for CORS compatibility (the core fix)
+        // Post data via URL parameters for CORS compatibility (key fix)
         const params = new URLSearchParams(data).toString();
         const endpoint = `${API_ENDPOINT}?${params}`;
         
@@ -132,6 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (moduleName) {
         try {
+             // Dynamically import the specific module logic
              const module = await import(`./${moduleName}.js`);
              
              if (module && module.init) {
@@ -142,7 +153,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         } catch (error) {
             console.error('Module loading failed:', error);
-            UI.showAlert(`Failed to load page logic from ${moduleName}.js. Check file path, syntax (especially 'Store' imports), and console for details.`, 'alert-danger');
+            // This error often occurs if the module file is missing, the import path is wrong, 
+            // or if the module itself contains a syntax error (like the missing 'Store' import or duplicate export).
+            UI.showAlert(`Failed to load page logic from ${moduleName}.js. Check file path, syntax, and console for details.`, 'alert-danger');
         }
     }
 });
