@@ -3,7 +3,7 @@
 // ===================================
 
 // ⚠️ PASTE YOUR KITCHEN LOG GOOGLE APPS SCRIPT WEB APP URL HERE
-const API_ENDPOINT = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE'; 
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec'; 
 
 // ===================================
 // 1. COMMON UI CLASS 
