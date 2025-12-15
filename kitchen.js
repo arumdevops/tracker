@@ -1,6 +1,5 @@
 // kitchen.js - Handles Kitchen Activity Log Page
 
-// CRITICAL FIX: Import Store and UI from the shared script.js
 import { Store, UI } from './script.js';
 
 // Data Class for this module
@@ -43,11 +42,7 @@ function displayActivities(activities) {
     });
 }
 
-// NEW FUNCTIONALITY: Fetch and populate meals based on date
-/**
- * Fetches meal details for a given date and populates the form fields.
- * @param {string} date - The date in YYYY-MM-DD format.
- */
+// NEW FUNCTIONALITY: Fetch and populate meals based on date (Fix for Bug 3)
 async function fetchMealPlanForDate(date) {
     if (!date) {
         // Clear meal fields if the date is cleared
@@ -59,10 +54,8 @@ async function fetchMealPlanForDate(date) {
 
     UI.showAlert('Fetching meal plan...', 'alert-info');
     
-    // Use the updated Store.get method with the date parameter
     const meal = await Store.get('planner', date); 
 
-    // Get the meal input fields
     const meal1Field = document.querySelector('#meal1');
     const meal2Field = document.querySelector('#meal2');
     const meal3Field = document.querySelector('#meal3');
@@ -74,37 +67,33 @@ async function fetchMealPlanForDate(date) {
 
     if (meal && !meal.error) {
         if (meal.breakfast || meal.lunch || meal.dinner) {
-            // Populate the fields
             meal1Field.value = meal.breakfast || '';
             meal2Field.value = meal.lunch || '';
             meal3Field.value = meal.dinner || '';
             UI.showAlert(`Meal plan for ${date} loaded successfully.`, 'alert-success');
         } else {
-             UI.showAlert(`No meals were planned for ${date}. Fields cleared.`, 'alert-warning');
+             UI.showAlert(`No meal plan found for ${date}. Fields cleared.`, 'alert-warning');
         }
     } else if (meal && meal.error) {
          UI.showAlert(`Error fetching meal plan: ${meal.error}`, 'alert-danger');
     } else {
-        // meal is null, meaning no plan found for that date
         UI.showAlert(`No meal plan found for ${date}. Please enter manually.`, 'alert-warning');
     }
 }
 
-// Page Handler (Initialization logic)
+
+// Page Handler (Initialization logic - Fix for Bug 2: History Load)
 export async function initKitchen() {
     
     // 1. Setup date change listener
     const logDateField = document.querySelector('#logDate');
     
     if (logDateField) {
-        // Listener for date changes
         logDateField.addEventListener('change', (e) => {
             fetchMealPlanForDate(e.target.value);
         });
 
-        // Optional: If you want to load the meal plan for today on page load
         if (!logDateField.value) {
-            // Set today's date as default (optional, based on form setup)
             const today = new Date().toISOString().split('T')[0];
             logDateField.value = today;
         }
@@ -118,13 +107,14 @@ export async function initKitchen() {
     // 2. Setup form submission
     setupFormSubmission();
 
-    // 3. Load and display existing activities
+    // 3. Load and display existing activities (Crucial for Bug 2 fix)
     UI.showAlert('Loading past kitchen activities...', 'alert-info'); 
     
     const activities = await Store.get('logs'); 
     
     if (activities.error) {
-        UI.showAlert('Failed to load logs. Check console for details.', 'alert-danger');
+        // This alert is critical for debugging - if you see this, check your API_ENDPOINT!
+        UI.showAlert('Failed to load logs. Check console and API_ENDPOINT.', 'alert-danger');
     } else {
         displayActivities(activities);
         // Clear the initial "Loading" alert after successful load

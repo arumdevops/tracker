@@ -3,7 +3,8 @@
 // ===================================
 
 // ⚠️ PASTE YOUR KITCHEN LOG GOOGLE APPS SCRIPT WEB APP URL HERE
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxwkm_pZgS97Vcm5VZLAEzqc01nGf9ENwggo1TvOL_vDlLlZXDUvaDYd6zxNkSPXa6A/exec'; 
+// This URL must be correct and your script must be deployed.
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec'; 
 
 // ===================================
 // 1. COMMON UI CLASS 
@@ -19,6 +20,7 @@ class UI {
         div.className = `alert ${className}`;
         div.appendChild(document.createTextNode(message));
         
+        // Find a safe insertion point
         const insertionPoint = document.querySelector('form') || document.querySelector('h2') || document.querySelector('.table');
         
         if (insertionPoint) {
@@ -31,14 +33,13 @@ class UI {
     }
     
     // --- Utility Functions ---
-    // UPDATED: To handle the 'Pallavi' default cook name and clear kitchen fields
     static clearActivityFields() {
         const form = document.querySelector('#activity-form');
         if (form) {
             form.reset();
             // Explicitly set cookName back to the default value
             document.querySelector('#cookName').value = 'Pallavi'; 
-            // NEW: Clear the dynamically populated meal fields to be ready for the next date selection
+            // Clear the dynamically populated meal fields
             document.querySelector('#meal1').value = '';
             document.querySelector('#meal2').value = '';
             document.querySelector('#meal3').value = '';
@@ -88,7 +89,8 @@ class Store {
             return data;
         } catch (error) {
             console.error('Fetch error:', error);
-            return { error: 'Failed to fetch data. See console for details.' };
+            // Provide a clear error message if the fetch itself fails (e.g., network, CORS, bad API_ENDPOINT)
+            return { error: 'Failed to fetch data. Check API_ENDPOINT and network connection.' };
         }
     }
 
@@ -127,7 +129,7 @@ class Store {
 
 
 // Export the Store class for other modules
-export { Store, UI }; // Export UI for modular use in kitchen.js
+export { Store, UI }; 
 
 // ===================================
 // 3. ROUTER / ENTRY POINT
@@ -135,36 +137,33 @@ export { Store, UI }; // Export UI for modular use in kitchen.js
 
 document.addEventListener('DOMContentLoaded', async () => {
     let moduleName = null;
-    let initFunctionName = null; // Store the function name to call
+    let initFunctionName = null; 
     
     // Check which page we are on based on a unique element
     if (document.querySelector('#activity-form')) {
         moduleName = 'kitchen';
-        initFunctionName = 'initKitchen'; // The new function name
+        initFunctionName = 'initKitchen'; 
         
-        // Set the cook name default on load, just in case JS loads before form is rendered
         const cookNameField = document.querySelector('#cookName');
-        if (cookNameField && !cookNameField.value) { // Only set if empty
+        if (cookNameField && !cookNameField.value) { 
             cookNameField.value = 'Pallavi'; 
         }
     }
     else if (document.querySelector('#meal-plan-body')) {
         moduleName = 'planner'; 
-        initFunctionName = 'initPlanner'; // The new function name
+        initFunctionName = 'initPlanner'; 
     }
     else if (document.querySelector('#expense-form')) {
         moduleName = 'expense';
-        initFunctionName = 'initExpense'; // The new function name
+        initFunctionName = 'initExpense'; 
     }
 
     if (moduleName) {
         try {
-             // Dynamically import the required module (e.g., ./kitchen.js)
              const module = await import(`./${moduleName}.js`);
              
-             // Check if the specific, renamed function exists in the module
              if (module && module[initFunctionName]) {
-                 module[initFunctionName](); // <-- CALL THE RENAMED FUNCTION
+                 module[initFunctionName]();
              } else {
                  throw new Error(`Module ${moduleName}.js did not export a '${initFunctionName}' function.`);
              }
@@ -176,4 +175,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-window.UI = UI; // Keep for backwards compatibility
+window.UI = UI;
