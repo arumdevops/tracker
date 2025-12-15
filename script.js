@@ -3,7 +3,7 @@
 // ===================================
 
 // ⚠️ PASTE YOUR KITCHEN LOG GOOGLE APPS SCRIPT WEB APP URL HERE
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec'; 
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxwkm_pZgS97Vcm5VZLAEzqc01nGf9ENwggo1TvOL_vDlLlZXDUvaDYd6zxNkSPXa6A/exec'; 
 
 // ===================================
 // 1. COMMON UI CLASS 
@@ -38,6 +38,10 @@ class UI {
             form.reset();
             // Explicitly set cookName back to the default value
             document.querySelector('#cookName').value = 'Pallavi'; 
+            // NEW: Clear the dynamically populated meal fields to be ready for the next date selection
+            document.querySelector('#meal1').value = '';
+            document.querySelector('#meal2').value = '';
+            document.querySelector('#meal3').value = '';
         }
     }
     
@@ -57,10 +61,20 @@ class UI {
 
 class Store {
     
-    // FETCH data (GET request)
-    static async get(pageName) {
+    /**
+     * Fetches data from the Google Sheet backend.
+     * @param {string} pageName - The type of data to fetch ('logs', 'planner', 'expense').
+     * @param {string | null} [date=null] - Optional date in YYYY-MM-DD format for specific lookups (e.g., meal plan).
+     */
+    static async get(pageName, date = null) {
+        let url = `${API_ENDPOINT}?page=${pageName}`;
+        
+        if (pageName === 'planner' && date) {
+            url += `&date=${date}`; // Add the date parameter for specific meal plan lookup
+        }
+
         try {
-            const response = await fetch(`${API_ENDPOINT}?page=${pageName}`, {
+            const response = await fetch(url, {
                 method: 'GET',
                 redirect: 'follow', 
                 cache: 'no-cache'
@@ -113,8 +127,7 @@ class Store {
 
 
 // Export the Store class for other modules
-export { Store };
-
+export { Store, UI }; // Export UI for modular use in kitchen.js
 
 // ===================================
 // 3. ROUTER / ENTRY POINT
@@ -163,4 +176,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-window.UI = UI;
+window.UI = UI; // Keep for backwards compatibility
