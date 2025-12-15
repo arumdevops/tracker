@@ -17,65 +17,91 @@
         <h1><i class="fas fa-utensils"></i> Kitchen Activity Log</h1>
         <p>Record the cook's daily schedule and meals prepared.</p>
 
-        <h2><i class="fas fa-pen-to-square"></i> Log Daily Activity</h2>
-        <form id="activity-form">
-            <div class="multi-field-group">
-                <div class="form-group">
-                    <label for="logDate">Date</label>
-                    <input type="date" id="logDate" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="cookName">Cook Name</label>
-                    <input type="text" id="cookName" class="form-control" required value="Pallavi" placeholder="e.g., Raju or Pallavi">
-                </div>
-            </div>
-            <div class="multi-field-group">
-                <div class="form-group">
-                    <label for="timeIn">Time In</label>
-                    <input type="text" id="timeIn" class="form-control" required placeholder="e.g., Eight AM">
-                </div>
-                <div class="form-group">
-                    <label for="timeOut">Time Out</label>
-                    <input type="text" id="timeOut" class="form-control" required placeholder="e.g., Eleven AM">
-                </div>
-            </div>
-
-            <div class="multi-field-group meal-group">
-                <div class="form-group">
-                    <label for="meal1">Meal 1 (Breakfast)</label>
-                    <input type="text" id="meal1" class="form-control" placeholder="e.g., Dosa, Idli">
-                </div>
-                <div class="form-group">
-                    <label for="meal2">Meal 2 (Lunch)</label>
-                    <input type="text" id="meal2" class="form-control" placeholder="e.g., Rice, Dal, Sabzi">
-                </div>
-                <div class="form-group">
-                    <label for="meal3">Meal 3 (Dinner)</label>
-                    <input type="text" id="meal3" class="form-control" placeholder="e.g., Roti, Curry">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="rating">Rating (1-5)</label>
-                <select id="rating" class="form-control" required>
-                    <option value="5">5 - Excellent</option>
-                    <option value="4">4 - Good</option>
-                    <option value="3">3 - Average</option>
-                    <option value="2">2 - Needs Improvement</option>
-                    <option value="1">1 - Poor</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="foodRemarks">Remarks/Notes</label>
-                <textarea id="foodRemarks" class="form-control"></textarea>
-            </div>
+        <div class="kitchen-layout">
             
-            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> Add Activity</button>
-        </form>
+            <div class="stats-card-container">
+                <h2 style="margin-top: 0;"><i class="fas fa-chart-line"></i> Quick Stats</h2>
+
+                <div class="stat-card primary">
+                    <div class="stat-label">Average Rating</div>
+                    <div class="stat-value" id="avg-rating">4.5 <i class="fas fa-star"></i></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Favorite Cook</div>
+                    <div class="stat-value" id="fav-cook">Pallavi</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">Meals Logged This Month</div>
+                    <div class="stat-value" id="meals-logged">28</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2><i class="fas fa-pen-to-square"></i> Log Daily Activity</h2>
+                <form id="activity-form">
+                    <div class="multi-field-group">
+                        <div class="form-group">
+                            <label for="logDate">Date</label>
+                            <input type="date" id="logDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cookName">Cook Name</label>
+                            <input type="text" id="cookName" class="form-control" required value="Pallavi" placeholder="e.g., Pallavi">
+                        </div>
+                    </div>
+                    
+                    <div class="multi-field-group">
+                        <div class="form-group">
+                            <label for="timeIn">Time In</label>
+                            <input type="time" id="timeIn" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeOut">Time Out</label>
+                            <input type="time" id="timeOut" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="multi-field-group">
+                        <div class="form-group">
+                            <label for="meal1">Meal 1 (Breakfast)</label>
+                            <input type="text" id="meal1" class="form-control" placeholder="e.g., Dosa/Idli">
+                        </div>
+                        <div class="form-group">
+                            <label for="meal2">Meal 2 (Lunch)</label>
+                            <input type="text" id="meal2" class="form-control" placeholder="e.g., Rice & Sambar">
+                        </div>
+                        <div class="form-group">
+                            <label for="meal3">Meal 3 (Dinner)</label>
+                            <input type="text" id="meal3" class="form-control" placeholder="e.g., Chapati & Curry">
+                        </div>
+                    </div>
+
+                    <div class="multi-field-group">
+                        <div class="form-group">
+                            <label for="rating">Rating (1-5)</label>
+                            <select id="rating" class="form-control" required>
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Good</option>
+                                <option value="3">3 - Average</option>
+                                <option value="2">2 - Needs Improvement</option>
+                                <option value="1">1 - Poor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="foodRemarks">Remarks/Notes</label>
+                            <textarea id="foodRemarks" class="form-control" rows="1"></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> Add Activity</button>
+                </form>
+            </div>
+        </div>
 
         <h2 class="mt-5"><i class="fas fa-list-ul"></i> Activity History</h2>
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Date</th>
@@ -94,6 +120,6 @@
         
         </div>
 
-    <script type="module" src="script.js?v=8"></script>
+    <script type="module" src="script.js?v=9"></script>
 </body>
 </html>
