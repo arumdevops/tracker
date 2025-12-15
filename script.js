@@ -7,7 +7,7 @@
 const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzjeNrAJJYCvd3m_UYnN8Z3s8K0VLyjsMA_Oi2vW49m9WWcmRqlR9E92rualolgaamu/exec'; 
 
 // ===================================
-// 1. COMMON UI CLASS 
+// 1. COMMON UI CLASS (FIXED ALERT INSERTION)
 // ===================================
 
 class UI {
@@ -20,16 +20,21 @@ class UI {
         div.className = `alert ${className}`;
         div.appendChild(document.createTextNode(message));
         
-        // Find a safe insertion point
-        const insertionPoint = document.querySelector('form') || document.querySelector('h2') || document.querySelector('.table');
+        // FIX: Safely insert the alert element.
+        // We find the main <h1> title, which is a direct child of .container, 
+        // and insert the alert immediately after it.
+        const firstH1 = document.querySelector('h1');
         
-        if (insertionPoint) {
-             container.insertBefore(div, insertionPoint); 
-             setTimeout(() => document.querySelector('.alert')?.remove(), 3000);
+        if (firstH1 && firstH1.parentElement === container) {
+             // Use .after() for simple insertion after an element
+             firstH1.after(div); 
         } else {
+             // Safest fallback: Prepend to the container
              container.prepend(div);
-             setTimeout(() => document.querySelector('.alert')?.remove(), 3000);
         }
+        
+        // Set timeout to remove the alert
+        setTimeout(() => document.querySelector('.alert')?.remove(), 3000);
     }
     
     // --- Utility Functions ---
