@@ -4,7 +4,7 @@
 
 // ⚠️ PASTE YOUR KITCHEN LOG GOOGLE APPS SCRIPT WEB APP URL HERE
 // This URL must be correct and your script must be deployed.
-const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxwkm_pZgS97Vcm5VZLAEzqc01nGf9ENwggo1TvOL_vDlLlZXDUvaDYd6zxNkSPXa6A/exec'; 
+const API_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxnn7N-1v0B6BF_sz0Qx8TLRjHOB-LxQy6fzniY5Hst9oi6Ps6rIJI6ugSbCAljYU4XCA/exec'; 
 
 // ===================================
 // 1. COMMON UI CLASS (FIXED ALERT INSERTION)
